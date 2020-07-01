@@ -28,5 +28,19 @@ def merge_datasets():
     df = df.drop_duplicates('TweetID')
     df.to_csv("../data/hatespeech.csv", index=False, header=["TweetID", "annotation"])
 
+def join_datasets():
+    annotations = pd.read_csv("../data/hatespeech.csv")
+    print(annotations.shape)
+    text = pd.read_csv("../data/hate_dataset.csv")
+    print(text.shape)
+    print(len(set(text["TweetID"]).difference(set(annotations["TweetID"]))))
+    joined = text.join(annotations.set_index('TweetID'), on='TweetID')
+    print(joined.head())
+    print(joined.isna().sum())
+    joined.to_csv("../data/dataset.csv", index=False, header=["TweetID", "text", "annotation"])
 
 if __name__ == '__main__':
+    df = pd.read_csv("../data/dataset.csv")
+    print(df.head())
+
+

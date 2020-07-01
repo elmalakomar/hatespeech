@@ -1,6 +1,6 @@
-**/data
+**/data/*
 
-!/data/hate_dataset.csv
+!/data/dataset.csv
 
 twitter_credentials.*
 twitterAPI.*

@@ -2,16 +2,24 @@
 class Settings:
     def __init__(self):
         # dataset read and manipulation
-        self.csv_path = "../data/dataset.csv"
+        self.CSV_PATH = "../data/dataset.csv"
+        self.IGNORE_COLUMNS = ['TweetID']
+        self.X_LABEL = 'text'
+        self.Y_LABEL = 'annotation'
 
-        self.ignore_columns = ['TweetID']
+        #function
+        self.CLEAN_TEXT = True
 
         # preprocessing
-        self.LOWER_TEXT = True
-        self.EMOJI_TO_TEXT = True
-        self.REMOVE_NUMBERS = True
-        self.REMOVE_PUNCTUATION = True
         self.REMOVE_LINKS = True
+        self.REMOVE_NUMBERS = True
+        self.EMOJI_TO_TEXT = True
+        self.REMOVE_USER_TAGS = True
+        self.REMOVE_PUNCTUATION = True
+        self.REMOVE_STOPWORDS = True
+
+        self.LOWER_TEXT = True
+
         self.AUTOCORRECT = False
-        self.REMOVE_HASHTAGS= True
+
 

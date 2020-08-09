@@ -7,10 +7,13 @@ class Settings:
         self.X_LABEL = 'text'
         self.Y_LABEL = 'annotation'
 
+        self.BALANCE_DATA= True
+
         #function
         self.CLEAN_TEXT = True
 
         # preprocessing
+        self.CHECK_CONTRACTION = True
         self.REMOVE_LINKS = True
         self.REMOVE_NUMBERS = True
         self.EMOJI_TO_TEXT = True
@@ -19,7 +22,16 @@ class Settings:
         self.REMOVE_STOPWORDS = True
 
         self.LOWER_TEXT = True
-
         self.AUTOCORRECT = False
+
+        ##
+        self.RANDOM_SEED = 16
+
+        ##
+        self.UNDERSAMPLING = False
+
+        #visualization
+        self.WORDCLOUD = False
+        self.MOST_FREQUENT_WORDS = False
 
 

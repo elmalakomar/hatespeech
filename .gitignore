@@ -6,3 +6,5 @@ twitter_credentials.*
 twitterAPI.*
 
 **/venv
+
+**/plots

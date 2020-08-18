@@ -3,6 +3,11 @@ from nltk import TweetTokenizer
 from nltk.corpus import stopwords
 import string
 import emoji
+from nltk.stem import LancasterStemmer
+from nltk.stem import SnowballStemmer
+from nltk.tokenize import word_tokenize
+from spellchecker import SpellChecker
+
 from api.setting import Settings
 ####
 
@@ -48,13 +53,17 @@ contraction_mapping = {"ain't": "is not", "aren't": "are not","can't": "cannot",
                    "wouldn't've": "would not have", "y'all": "you all", "y'all'd": "you all would",
                    "y'all'd've": "you all would have","y'all're": "you all are","y'all've": "you all have",
                    "you'd": "you would", "you'd've": "you would have", "you'll": "you will",
-                   "you'll've": "you will have", "you're": "you are", "you've": "you have" }
+                   "you'll've": "you will have", "you're": "you are", "you've": "you have",}
 
 # TODO: verificare se stopwords come 'not' incidano o meno
 def remove_stopwords(tokenized):
     stop_words = stopwords.words('english')
-    stop_words.extend(['mkr','im','one','kat'])
-    stop_words.remove('not')
+    stop_words.extend(['really','twitter','mykitchenrules','mkr','kat','like',
+                       'would','get','think',
+                       'one','people','want',
+                       'know','see','mkr2015',
+                       'andre','even','got',
+                       'also','annie', 'fuck'])
     tokenized_no_sw = [token for token in tokenized if token not in stop_words]
     return tokenized_no_sw
 
@@ -74,11 +83,14 @@ def is_usertag(token):
     return False
 
 def clean_tweet(settings, tweet):
-    if settings.CHECK_CONTRACTION:
-        tweet = ' '.join([contraction_mapping[t] if t in contraction_mapping else t for t in tweet.split(" ")])
+    tweet = str(tweet)
+
     if settings.LOWER_TEXT:
         tweet = tweet.lower()
+        tweet = re.sub(r'(.)\1+', r'\1\1',tweet)
         #print("lower-> ",tweet)
+    if settings.CHECK_CONTRACTION:
+        tweet = ' '.join([contraction_mapping[t] if t in contraction_mapping else t for t in tweet.split(" ")])
     if settings.REMOVE_LINKS: #remove links
         tweet = re.sub(r'http\S+', '', tweet)
         #print("link-> ",tweet)
@@ -102,6 +114,9 @@ def clean_tweet(settings, tweet):
     if settings.REMOVE_STOPWORDS:
         tokenized_tweet = remove_stopwords(tokenized_tweet)
         #print("stop_words-> ", tokenized_tweet)
-    tweet = ' '.join(token.lower() for token in tokenized_tweet).strip()
+    if settings.STEMMING:
+        stemmer = SnowballStemmer("english")
+        tokenized_tweet = [stemmer.stem(token) for token in tokenized_tweet]
+    tweet = ' '.join(token for token in tokenized_tweet).strip()
+    #tweet = re.sub(r'(.)\1+', r'\1\1',tweet)
     return tweet
-
